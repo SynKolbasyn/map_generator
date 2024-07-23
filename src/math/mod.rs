@@ -1,8 +1,12 @@
 pub mod point;
 pub mod vector;
-mod grid_point;
+pub mod grid_point;
 
+
+use rayon::join;
 use rayon::prelude::*;
+
+use crate::math::point::Point;
 use crate::math::grid_point::GridPoint;
 
 
@@ -32,6 +36,34 @@ impl Grid {
             }).collect();
         
         Self::new(x.into(), y.into(), points)
+    }
+    
+    pub fn process(&self, point: Point) -> f64 {
+        let tx: f64 = point.x - point.x.floor();
+        let ty: f64 = point.y - point.y.floor();
+        
+        let (a, b): (f64, f64) = join(
+            || -> f64 {
+                let a: f64 = self.points[point.y.floor() as usize][point.x.floor() as usize].height();
+                let b: f64 = self.points[point.y.floor() as usize][point.x.ceil() as usize].height();
+                Self::interpolate(a, b, tx)
+            },
+            || -> f64 {
+                let a: f64 = self.points[point.y.ceil() as usize][point.x.floor() as usize].height();
+                let b: f64 = self.points[point.y.ceil() as usize][point.x.ceil() as usize].height();
+                Self::interpolate(a, b, tx)
+            },
+        );
+        
+        Self::interpolate(a, b, ty)
+    }
+
+    pub fn interpolate(a: f64, b: f64, t: f64) -> f64 {
+        a + Self::smoother_step(t) * (b - a)
+    }
+
+    fn smoother_step(t: f64) -> f64 {
+        t * t * t * (t * (6.0 * t - 15.0) - 10.0)
     }
     
     pub fn x(&self) -> u32 {

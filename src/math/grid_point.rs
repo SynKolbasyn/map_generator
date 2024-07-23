@@ -3,6 +3,7 @@ use rand::prelude::*;
 use crate::math::point::Point;
 
 
+#[derive(Copy, Clone)]
 pub struct GridPoint {
     point: Point,
     height: f64,
@@ -22,5 +23,9 @@ impl GridPoint {
             Point::from(x, y),
             thread_rng().gen_range(0.0..=1.0),
         )
+    }
+    
+    pub fn height(&self) -> f64 {
+        self.height
     }
 }

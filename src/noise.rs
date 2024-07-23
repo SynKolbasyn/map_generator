@@ -37,8 +37,12 @@ impl Noise {
         )
     }
     
-    pub fn get_noise(&self, point: Point) -> f64 {
-        self.grids.par_iter().map(|grid| -> f64 { 0.0 }).sum()
+    pub fn get_noise<X: Into<f64>, Y: Into<f64>>(&self, x: X, y: Y) -> f64 {
+        let point: Point = Point::from(x, y);
+        self.grids.par_iter()
+            .map(|grid: &Grid| -> f64 {
+                grid.process(point)
+            }).sum()
     }
 }
 
