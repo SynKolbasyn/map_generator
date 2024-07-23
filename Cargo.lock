@@ -421,7 +421,6 @@ dependencies = [
 name = "map_generator"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "image",
  "rand",
  "rayon",
