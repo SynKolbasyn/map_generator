@@ -25,10 +25,10 @@ impl Grid {
         }
     }
     
-    pub fn from<X: Into<u32> + Copy + Sync, Y: Into<u32> + Copy + Sync>(x: X, y: Y, scale: i32) -> Self {
-        let points: Vec<Vec<GridPoint>> = (0..y.into()).into_par_iter()
+    pub fn from(x: u32, y: u32, scale: i32) -> Self {
+        let points: Vec<Vec<GridPoint>> = (0..y).into_par_iter()
             .map(|y: u32| -> Vec<GridPoint> {
-                (0..x.into()).into_par_iter()
+                (0..x).into_par_iter()
                     .map(|x: u32| -> GridPoint {
                         GridPoint::from(x, y)
                     }).collect()

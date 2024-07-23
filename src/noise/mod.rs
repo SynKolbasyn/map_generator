@@ -20,7 +20,7 @@ impl Noise {
     
     pub fn from(resolution: Resolution, octaves: u32) -> Self {
         let grids: Vec<Grid> = (0..octaves).into_par_iter()
-            .map(|octave| -> Grid {
+            .map(|octave: u32| -> Grid {
                 let multiplier: u32 = 2_u32.pow(octave);
                 Grid::from(
                     (resolution.x + 1) * multiplier,
