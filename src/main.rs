@@ -1,21 +1,20 @@
-use rand::random;
-use crate::noise::{Noise, Resolution};
-
 mod math;
 mod noise;
+mod image;
+
+
+use crate::image::Image;
+use crate::noise::Resolution;
+use crate::noise::noise_2d::Noise2D;
 
 
 fn main() {
-    let resolution: Resolution = Resolution::new(3, 3);
-    let octaves: u32 = 3;
+    let resolution: Resolution = Resolution::new(10, 10);
+    let octaves: u32 = 8;
+    let (width, height): (u32, u32) = (1080, 1080);
     
-    let noise: Noise = Noise::from(resolution, octaves);
-    let mut m: f64 = 0.0;
-    loop {
-        let n: f64 = noise.get_noise(random::<f64>(), random::<f64>());
-        if m < n.abs() {
-            m = n.abs();
-            println!("{m}");
-        }
-    }
+    let noise_2d: Noise2D = Noise2D::from(resolution, octaves, width, height);
+    
+    let image: Image = Image::from(noise_2d);
+    image.save("noise.png")
 }

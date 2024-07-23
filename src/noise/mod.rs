@@ -1,3 +1,5 @@
+pub mod noise_2d;
+
 use rayon::prelude::*;
 
 use crate::math::Grid;
@@ -5,17 +7,13 @@ use crate::math::point::Point;
 
 
 pub struct Noise {
-    resolution: Resolution,
-    octaves: u32,
     grids: Vec<Grid>,
 }
 
 
 impl Noise {
-    fn new(resolution: Resolution, octaves: u32, grids: Vec<Grid>) -> Self {
+    fn new(grids: Vec<Grid>) -> Self {
         Self {
-            resolution,
-            octaves,
             grids,
         }
     }
@@ -25,17 +23,13 @@ impl Noise {
             .map(|octave| -> Grid {
                 let multiplier: u32 = 2_u32.pow(octave);
                 Grid::from(
-                    resolution.x * multiplier,
-                    resolution.y * multiplier,
+                    (resolution.x + 1) * multiplier,
+                    (resolution.y + 1) * multiplier,
                     octave as i32,
                 )
             }).collect();
         
-        Self::new(
-            resolution,
-            octaves,
-            grids,
-        )
+        Self::new(grids)
     }
     
     pub fn get_noise<X: Into<f64>, Y: Into<f64>>(&self, x: X, y: Y) -> f64 {
