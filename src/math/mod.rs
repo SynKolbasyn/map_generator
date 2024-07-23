@@ -12,22 +12,20 @@ use crate::math::vector::Vector;
 
 
 pub struct Grid {
-    x: u32,
-    y: u32,
+    scale: u32,
     points: Vec<Vec<GridPoint>>
 }
 
 
 impl Grid {
-    fn new(x: u32, y: u32, points: Vec<Vec<GridPoint>>) -> Self {
+    fn new(scale: u32, points: Vec<Vec<GridPoint>>) -> Self {
         Self {
-            x,
-            y,
+            scale,
             points,
         }
     }
     
-    pub fn from<X: Into<u32> + Copy + Sync, Y: Into<u32> + Copy + Sync>(x: X, y: Y) -> Self {
+    pub fn from<X: Into<u32> + Copy + Sync, Y: Into<u32> + Copy + Sync>(x: X, y: Y, scale: u32) -> Self {
         let points: Vec<Vec<GridPoint>> = (0..y.into()).into_par_iter()
             .map(|y: u32| -> Vec<GridPoint> {
                 (0..x.into()).into_par_iter()
@@ -36,7 +34,7 @@ impl Grid {
                     }).collect()
             }).collect();
         
-        Self::new(x.into(), y.into(), points)
+        Self::new(scale, points)
     }
     
     pub fn process(&self, point: Point) -> f64 {
@@ -60,7 +58,6 @@ impl Grid {
                 Self::interpolate(a, b, tx)
             },
         );
-        println!("{a} {b}");
         
         Self::interpolate(a, b, ty)
     }
@@ -70,14 +67,10 @@ impl Grid {
     }
 
     fn smoother_step(t: f64) -> f64 {
-        t * t * t * (t * (6.0 * t - 15.0) - 10.0)
+        t * t * t * (t * (6.0 * t - 15.0) + 10.0)
     }
     
-    pub fn x(&self) -> u32 {
-        self.x
-    }
-
-    pub fn y(&self) -> u32 {
-        self.y
+    pub fn scale(&self) -> u32 {
+        self.scale
     }
 }

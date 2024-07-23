@@ -23,10 +23,11 @@ impl Noise {
     pub fn from(resolution: Resolution, octaves: u32) -> Self {
         let grids: Vec<Grid> = (0..octaves).into_par_iter()
             .map(|octave| -> Grid {
-                let multiplier: u32 = 2_u32.pow(octave); 
+                let multiplier: u32 = 2_u32.pow(octave);
                 Grid::from(
                     resolution.x * multiplier,
-                    resolution.y * multiplier
+                    resolution.y * multiplier,
+                    multiplier,
                 )
             }).collect();
         
@@ -41,7 +42,7 @@ impl Noise {
         let point: Point = Point::from(x, y);
         self.grids.par_iter()
             .map(|grid: &Grid| -> f64 {
-                grid.process(point) * 0.5_f64.powi((grid.x() / self.resolution.x) as i32)
+                grid.process(point) / <u32 as Into<f64>>::into(grid.scale())
             }).sum()
     }
 }
