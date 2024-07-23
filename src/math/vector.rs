@@ -1,5 +1,5 @@
 use std::ops::Mul;
-use rand::random;
+
 use crate::math::point::Point;
 
 
@@ -24,8 +24,8 @@ impl Vector {
     
     fn random() -> Self {
         Self::new(
-            Point::from(0, 0),
-            Point::from(random::<f64>(), random::<f64>()),
+            Point::random(),
+            Point::random(),
         )
     }
     
