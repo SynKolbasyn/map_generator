@@ -1,8 +1,8 @@
-use std::ops::Mul;
 use rayon::prelude::*;
 
 use crate::math::Grid;
 use crate::math::point::Point;
+
 
 pub struct Noise {
     resolution: Resolution,

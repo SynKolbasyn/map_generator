@@ -1,6 +1,3 @@
-use std::ops::Sub;
-
-
 #[derive(Copy, Clone)]
 pub struct Point {
     pub x: f64,
