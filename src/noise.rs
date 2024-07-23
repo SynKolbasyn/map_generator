@@ -27,7 +27,7 @@ impl Noise {
                 Grid::from(
                     resolution.x * multiplier,
                     resolution.y * multiplier,
-                    octave,
+                    octave as i32,
                 )
             }).collect();
         
@@ -42,7 +42,7 @@ impl Noise {
         let point: Point = Point::from(x, y);
         self.grids.par_iter()
             .map(|grid: &Grid| -> f64 {
-                grid.process(point) * 0.5_f64.powi(grid.scale() as i32)
+                grid.process(point)
             }).sum()
     }
 }
