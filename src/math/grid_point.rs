@@ -1,31 +1,34 @@
-use rand::prelude::*;
-
 use crate::math::point::Point;
+use crate::math::vector::Vector;
 
 
 #[derive(Copy, Clone)]
 pub struct GridPoint {
     point: Point,
-    height: f64,
+    unit_vector: Vector,
 }
 
 
 impl GridPoint {
-    fn new(point: Point, height: f64) -> Self {
+    fn new(point: Point, unit_vector: Vector) -> Self {
         Self {
             point,
-            height,
+            unit_vector,
         }
     }
 
     pub fn from<X: Into<f64>, Y: Into<f64>>(x: X, y: Y) -> Self {
         Self::new(
             Point::from(x, y),
-            thread_rng().gen_range(0.0..=1.0),
+            Vector::random_unit(),
         )
     }
     
-    pub fn height(&self) -> f64 {
-        self.height
+    pub fn point(&self) -> Point {
+        self.point
+    }
+    
+    pub fn vector(&self) -> Vector {
+        self.unit_vector
     }
 }
