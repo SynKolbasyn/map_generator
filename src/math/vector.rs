@@ -28,14 +28,16 @@ impl Vector {
     
     fn random() -> Self {
         let theta: f64 = thread_rng().gen_range(0.0..(PI * 2.0));
-        Self::new(
+        return Self::new(
             Point::from(0, 0),
             Point::from(theta.cos(), theta.sin()),
+        );
+
+        #[allow(unreachable_code)]
+        Self::new(
+            Point::random(),
+            Point::random(),
         )
-        // Self::new(
-        //     Point::random(),
-        //     Point::random(),
-        // )
     }
     
     fn to_unit(&self) -> Self {

@@ -1,3 +1,6 @@
+use rand::prelude::*;
+
+
 #[derive(Copy, Clone)]
 pub struct Point {
     pub x: f64,
@@ -17,7 +20,8 @@ impl Point {
         Self::new(x.into(), y.into())
     }
     
-    // pub fn random() -> Self {
-    //     Self::new(random(), random())
-    // }
+    #[allow(dead_code)]
+    pub fn random() -> Self {
+        Self::new(random(), random())
+    }
 }

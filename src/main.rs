@@ -3,6 +3,7 @@ mod noise;
 mod image;
 
 
+use std::fs::create_dir_all;
 use std::io::{stdin, stdout, Write};
 
 use crate::image::Image;
@@ -18,7 +19,7 @@ fn main() {
         stdout().flush().unwrap();
         stdin().read_line(&mut select).unwrap();
         select = select.trim().to_string();
-        
+
         if select.is_empty() || select == "n" || select == "no" {
             from_template(idx);
         }
@@ -34,7 +35,7 @@ fn from_template(idx: u128) {
     let resolution: Resolution = Resolution::new(5, 5);
     let octaves: u32 = 5;
     let (width, height): (u32, u32) = (640, 640);
-    
+
     println!("Template setting:");
     println!("resolution x: {}", resolution.x);
     println!("resolution y: {}", resolution.y);
@@ -45,7 +46,8 @@ fn from_template(idx: u128) {
     let noise_2d: Noise2D = Noise2D::from(resolution, octaves, width, height);
 
     let image: Image = Image::from(noise_2d);
-    image.save(format!("noise_template_{idx}.png"));
+    create_dir_all("./images/").unwrap();
+    image.save(format!("./images/noise_template_{idx}.png"));
 }
 
 
@@ -75,7 +77,7 @@ fn from_user(idx: u128) {
     print!("Enter height of picture: ");
     stdout().flush().unwrap();
     stdin().read_line(&mut height).unwrap();
-    
+
     resolution_x = resolution_x.trim().to_string();
     resolution_y = resolution_y.trim().to_string();
     octaves = octaves.trim().to_string();
@@ -89,5 +91,6 @@ fn from_user(idx: u128) {
     let noise_2d: Noise2D = Noise2D::from(resolution, octaves, width, height);
 
     let image: Image = Image::from(noise_2d);
-    image.save(format!("noise_{resolution_x}_{resolution_y}_{octaves}_{width}_{height}_{idx}.png"));
+    create_dir_all("./images/").unwrap();
+    image.save(format!("./images/noise_{resolution_x}_{resolution_y}_{octaves}_{width}_{height}_{idx}.png"));
 }

@@ -1,4 +1,5 @@
 use image::Luma;
+
 use rayon::prelude::*;
 
 use crate::noise::{Noise, Resolution};
