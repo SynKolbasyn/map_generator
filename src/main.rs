@@ -17,8 +17,9 @@ fn main() {
         print!("Do you want to use custom settings? (default - no): ");
         stdout().flush().unwrap();
         stdin().read_line(&mut select).unwrap();
+        select = select.trim().to_string();
         
-        if select.trim().is_empty() {
+        if select.is_empty() || select == "n" || select == "no" {
             from_template(idx);
         }
         else {
@@ -44,7 +45,7 @@ fn from_template(idx: u128) {
     let noise_2d: Noise2D = Noise2D::from(resolution, octaves, width, height);
 
     let image: Image = Image::from(noise_2d);
-    image.save(format!("noise_{idx}.png"));
+    image.save(format!("noise_template_{idx}.png"));
 }
 
 
@@ -88,5 +89,5 @@ fn from_user(idx: u128) {
     let noise_2d: Noise2D = Noise2D::from(resolution, octaves, width, height);
 
     let image: Image = Image::from(noise_2d);
-    image.save(format!("noise_{idx}_{resolution_x}_{resolution_y}_{octaves}_{width}_{height}.png"));
+    image.save(format!("noise_{resolution_x}_{resolution_y}_{octaves}_{width}_{height}_{idx}.png"));
 }
