@@ -44,8 +44,8 @@ impl Noise {
 
 #[derive(Copy, Clone)]
 pub struct Resolution {
-    x: u32,
-    y: u32,
+    pub x: u32,
+    pub y: u32,
 }
 
 

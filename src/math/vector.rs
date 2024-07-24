@@ -1,4 +1,8 @@
+use std::f64::consts::PI;
+
 use std::ops::Mul;
+
+use rand::prelude::*;
 
 use crate::math::point::Point;
 
@@ -23,10 +27,15 @@ impl Vector {
     }
     
     fn random() -> Self {
+        let theta: f64 = thread_rng().gen_range(0.0..(PI * 2.0));
         Self::new(
-            Point::random(),
-            Point::random(),
+            Point::from(0, 0),
+            Point::from(theta.cos(), theta.sin()),
         )
+        // Self::new(
+        //     Point::random(),
+        //     Point::random(),
+        // )
     }
     
     fn to_unit(&self) -> Self {
